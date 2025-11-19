@@ -22,9 +22,7 @@ def first_come_first_serve(n, arrival_array, burst_array):
     waiting_array = np.zeros(n, dtype=int)
     gantt_chart = []
     priority_array = ["-"] * n
-    # Create a list of tuples with (arrival, original_index, burst)
     processes = [(arrival_array[i], i, burst_array[i]) for i in range(n)]
-    # Sort by arrival time first, then by original index to maintain order for ties
     processes.sort(key=lambda x: (x[0], x[1]))
     current_time = 0
     
@@ -221,7 +219,6 @@ def plot_histogram(frame, process_array, waiting_array):
 comparison_metrics = {}
 
 def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_array, completion_array, turnaround_array, waiting_array, gantt_chart, algorithm_name):
-    # Convert arrays to lists if they are NumPy arrays
     if isinstance(process_array, np.ndarray):
         process_array = process_array.tolist()
     if isinstance(arrival_array, np.ndarray):
@@ -237,7 +234,6 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     if isinstance(gantt_chart, np.ndarray):
         gantt_chart = gantt_chart.tolist()
 
-    # Ensure gantt_chart is a list of tuples with correct types
     gantt_chart = [(str(process), float(start), float(end)) for process, start, end in gantt_chart]
 
     root = tk.Tk()
@@ -271,14 +267,14 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     algo_message = tk.Label(
         scrollable_frame,
         text=f"Visual Representation of Processes Running and Scheduling with {algorithm_name}",
-        font=("Arial", 20, "bold"),  # Reduced from 28 to 20
+        font=("Arial", 20, "bold"), 
         bg="#3f3f3f",
         fg="#03DAC6"
     )
-    algo_message.pack(pady=20)  # Kept as 20 for consistency with other sections
+    algo_message.pack(pady=20)  
 
     df_frame = tk.Frame(scrollable_frame, bg="#3f3f3f")
-    df_frame.pack(pady=10, fill="x")  # Reduced from 20 to 10
+    df_frame.pack(pady=10, fill="x")  
 
     data = {
         "Process": process_array,
@@ -291,12 +287,12 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     }
     df = pd.DataFrame(data)
     
-    table_title = tk.Label(df_frame, text="Process Scheduling Metrics", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#BB86FC")  # Reduced from 26 to 18
+    table_title = tk.Label(df_frame, text="Process Scheduling Metrics", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#BB86FC")  
     table_title.pack(pady=5, expand=True)  # Reduced from 10 to 5
     table = ttk.Treeview(df_frame, columns=list(df.columns), show="headings", height=min(10, n))
     style = ttk.Style()
-    style.configure("Treeview.Heading", font=("Arial", 14, "bold"), foreground="#FFFFFF", background="#4A4A4A")  # Reduced from 18 to 14
-    style.configure("Treeview", font=("Arial", 12), rowheight=30, foreground="#FFFFFF", background="#2D2D2D")  # Reduced from 16 to 12, rowheight from 40 to 30
+    style.configure("Treeview.Heading", font=("Arial", 14, "bold"), foreground="#FFFFFF", background="#4A4A4A") 
+    style.configure("Treeview", font=("Arial", 12), rowheight=30, foreground="#FFFFFF", background="#2D2D2D")  
     for col in df.columns:
         table.heading(col, text=col, anchor="center")
         table.column(col, width=180, anchor="center")
@@ -313,10 +309,10 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     energy_result = calculate_energy(gantt_chart, total_time)
     total_energy = round(energy_result["total_energy"], 2)
 
-    tk.Label(summary_frame, text=f"Throughput: {throughput:.2f}", font=("Arial", 14), bg="#3f3f3f", fg="#FFFF00").pack(pady=5, expand=True)  # Reduced from 18 to 14
-    tk.Label(summary_frame, text=f"Avg Waiting Time: {avg_wait:.2f}", font=("Arial", 14), bg="#3f3f3f", fg="#FFA500").pack(pady=5, expand=True)  # Reduced from 18 to 14
-    tk.Label(summary_frame, text=f"Avg Turnaround Time: {avg_turn:.2f}", font=("Arial", 14), bg="#3f3f3f", fg="#FF0000").pack(pady=5, expand=True)  # Reduced from 18 to 14
-    tk.Label(summary_frame, text=f"Total Energy Consumption: {total_energy:.2f} J", font=("Arial", 14), bg="#3f3f3f", fg="#00FF00").pack(pady=5, expand=True)  # Reduced from 18 to 14
+    tk.Label(summary_frame, text=f"Throughput: {throughput:.2f}", font=("Arial", 14), bg="#3f3f3f", fg="#FFFF00").pack(pady=5, expand=True) 
+    tk.Label(summary_frame, text=f"Avg Waiting Time: {avg_wait:.2f}", font=("Arial", 14), bg="#3f3f3f", fg="#FFA500").pack(pady=5, expand=True)  
+    tk.Label(summary_frame, text=f"Avg Turnaround Time: {avg_turn:.2f}", font=("Arial", 14), bg="#3f3f3f", fg="#FF0000").pack(pady=5, expand=True)  
+    tk.Label(summary_frame, text=f"Total Energy Consumption: {total_energy:.2f} J", font=("Arial", 14), bg="#3f3f3f", fg="#00FF00").pack(pady=5, expand=True)  
 
     comparison_metrics[algorithm_name] = {
         "Avg Waiting Time": avg_wait,
@@ -331,7 +327,7 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
                text="View Energy Consumption", 
                command=lambda: show_energy_consumption_view(algorithm_name, gantt_chart, total_time),
                style="Custom.TButton").pack(expand=True)
-    style.configure("Custom.TButton", font=("Arial", 12), padding=8)  # Reduced from 14 to 12
+    style.configure("Custom.TButton", font=("Arial", 12), padding=8)  
 
     save_metrics_frame = tk.Frame(scrollable_frame, bg="#3f3f3f")
     save_metrics_frame.pack(pady=10, fill="x")
@@ -356,21 +352,21 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     message = tk.Label(
         scrollable_frame,
         text=f"Real Time Visualization Of Process Scheduling {algorithm_name}",
-        font=("Arial", 18, "bold"),  # Reduced from 24 to 18
+        font=("Arial", 18, "bold"),  
         bg="#3f3f3f",
         fg="#03DAC6"
     )
-    message.pack(pady=0)  # Reduced from 0 to 5 (minimal padding above), but adjusted below
+    message.pack(pady=0)  
 
     # Animation Section
     canvas_width = 1200
     bar_width = 400
     bar_height = 40
-    spacing = 55  # Increased from 60 to 80 to add space between process bars
+    spacing = 55 
     animation_height = (n * spacing) + 10
 
     animation_frame = tk.Frame(scrollable_frame, bg="#3f3f3f")
-    animation_frame.pack(pady=2, fill="x")  # Reduced from 10 to 2 to minimize space after message
+    animation_frame.pack(pady=2, fill="x")  
     animation_canvas = tk.Canvas(animation_frame, width=canvas_width, height=animation_height, bg="#3f3f3f", highlightthickness=0)
     animation_canvas.pack()
 
@@ -400,24 +396,24 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
             x = start_x + s * segment_width
             animation_canvas.create_line(x, y1, x, y2, fill="white", dash=(2, 2))
         bar = animation_canvas.create_rectangle(start_x, y1, start_x, y2, fill="gray", outline="white", width=2)
-        text = animation_canvas.create_text(start_x - 50, (y1 + y2) // 2, text=process_array[i], font=("Arial", 12, "bold"), fill="white", anchor="e")  # Reduced from 14 to 12
-        status_text = animation_canvas.create_text(start_x + bar_width + 60, (y1 + y2) // 2, text="", font=("Arial", 16), fill="#CC5500", anchor="w")  # Reduced from 20 to 16
+        text = animation_canvas.create_text(start_x - 50, (y1 + y2) // 2, text=process_array[i], font=("Arial", 12, "bold"), fill="white", anchor="e")  
+        status_text = animation_canvas.create_text(start_x + bar_width + 60, (y1 + y2) // 2, text="", font=("Arial", 16), fill="#CC5500", anchor="w") 
         process_bars[i] = (bar, start_x, y1, y2, bar_width)
         process_status_texts[i] = status_text
 
     timeline_height = 175
     timeline_canvas = tk.Canvas(animation_frame, width=canvas_width, height=timeline_height, bg="#3f3f3f", highlightthickness=0)
-    timeline_canvas.pack(pady=0)  # Reduced from 10 to 5
+    timeline_canvas.pack(pady=0) 
 
     max_time = max(end for _, _, end in gantt_chart) if gantt_chart else max(completion_array) if completion_array else 1.0
 
-    # Increase timeline length and set scale to 15 units
+   
     timeline_start_x = 50
-    timeline_end_x = timeline_start_x + 1000  # Increase length by 200 pixels
+    timeline_end_x = timeline_start_x + 1000  
     timeline_y = timeline_height // 2
     timeline_canvas.create_line(timeline_start_x, timeline_y, timeline_end_x, timeline_y, fill="white", width=2)
     
-    # Scale to show only 15 time units
+  
     time_interval = max_time / 15 if max_time > 0 else 1
     for t in range(16):  # 0 to 15 inclusive
         scaled_time = t * time_interval
@@ -425,7 +421,7 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
         timeline_canvas.create_line(x, timeline_y - 5, x, timeline_y + 5, fill="white")
         timeline_canvas.create_text(x, timeline_y + 20, text=f"{scaled_time:.1f}", font=("Arial", 8), fill="white")  # Reduced from 10 to 8
 
-    # Expanded color palette to 10 colors
+  
     process_colors = {}
     colors = ["#FF5555", "#55FF55", "#5555FF", "#FFFF55", "#FF55FF", 
               "#00FFFF", "#006400", "#FFA500", "#800080", "#FF4500"]
@@ -433,9 +429,9 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     for i, process in enumerate(unique_processes):
         process_colors[process] = colors[i % len(colors)]
 
-    # Adjust y-positions to prevent overlap
+   
     process_y_positions = {}
-    y_spacing = 25  # Increased spacing to avoid overlap
+    y_spacing = 25  
     for i, process in enumerate(unique_processes):
         process_y_positions[process] = timeline_y - 50 + (i * y_spacing)
 
@@ -444,17 +440,17 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
         x2 = timeline_start_x + (end / max_time) * (timeline_end_x - timeline_start_x)
         y = process_y_positions[process]
         timeline_canvas.create_rectangle(x1, y - 5, x2, y + 5, fill=process_colors[process], outline="white")
-        timeline_canvas.create_text(x1 - 30, y, text=process, font=("Arial", 8), fill="white", anchor="e")  # Reduced from 10 to 8
+        timeline_canvas.create_text(x1 - 30, y, text=process, font=("Arial", 8), fill="white", anchor="e")  
 
-    time_label = tk.Label(scrollable_frame, text="Time: 0", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#FFFFFF")  # Reduced from 24 to 18
-    time_label.pack(pady=5)  # Reduced from 10 to 5
+    time_label = tk.Label(scrollable_frame, text="Time: 0", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#FFFFFF") 
+    time_label.pack(pady=5)  
     completion_label = tk.Label(scrollable_frame, text="Completed Processes: ", font=("Arial", 12, "bold"), bg="#3f3f3f", fg="#00FF00")  # Reduced from 16 to 12
-    completion_label.pack(pady=5)  # Reduced from 10 to 5
-    timeline_label = tk.Label(scrollable_frame, text="Current Execution: None", font=("Arial", 12), bg="#3f3f3f", fg="#FFFFFF")  # Reduced from 16 to 12
-    timeline_label.pack(pady=5)  # Reduced from 10 to 5
+    completion_label.pack(pady=5)  
+    timeline_label = tk.Label(scrollable_frame, text="Current Execution: None", font=("Arial", 12), bg="#3f3f3f", fg="#FFFFFF")  
+    timeline_label.pack(pady=5)  
 
     slider_frame = tk.Frame(scrollable_frame, bg="#3f3f3f")
-    slider_frame.pack(pady=5, fill="x")  # Reduced from 10 to 5
+    slider_frame.pack(pady=5, fill="x") 
     time_slider = ttk.Scale(slider_frame, from_=0, to=max_time, orient="horizontal", length=400, command=lambda val: manual_time_update(float(val)))
     time_slider.pack(expand=True)
 
@@ -467,12 +463,12 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     start_pause_label = tk.Label(
         scrollable_frame,
         text="  Start  ",
-        font=("Arial", 16, "bold"),  # Reduced from 16 to 12
+        font=("Arial", 16, "bold"),  
         bg="#040406",
         fg="white",
         cursor="hand2"
     )
-    start_pause_label.pack(pady=10)  # Reduced from 20 to 10
+    start_pause_label.pack(pady=10)  
 
     def toggle_start_pause(event=None):
         nonlocal current_time, current_gantt_idx
@@ -603,7 +599,6 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
                 animation_canvas.itemconfig(process_status_texts[process_idx], text="Running", fill="#CC5500")
                 timeline_label.config(text=f"Current Execution: {process_name} (Start: {start}, End: {end})")
 
-                # Fix: Check if process is completed after updating progress
                 if process_progress[process_idx] >= total_burst and process_name not in completed_processes:
                     animation_canvas.itemconfig(process_status_texts[process_idx], text="Completed", fill="#00FF00")
                     completed_processes.append(process_name)
@@ -631,18 +626,18 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
             animation_canvas.after(20, update_process_bars)
 
     graph_frame = tk.Frame(scrollable_frame, bg="#3f3f3f")
-    graph_frame.pack(pady=10, fill="x")  # Reduced from 20 to 10
+    graph_frame.pack(pady=10, fill="x")  
 
     gantt_frame = tk.Frame(graph_frame, bg="#3f3f3f")
-    gantt_frame.pack(pady=5, fill="x")  # Reduced from 10 to 5
+    gantt_frame.pack(pady=5, fill="x")
     hist_frame = tk.Frame(graph_frame, bg="#3f3f3f")
-    hist_frame.pack(pady=5, fill="x")  # Reduced from 10 to 5
+    hist_frame.pack(pady=5, fill="x")  
 
-    gantt_title = tk.Label(gantt_frame, text=f"Gantt Chart of {algorithm_name}", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#BB86FC")  # Reduced from 26 to 18
+    gantt_title = tk.Label(gantt_frame, text=f"Gantt Chart of {algorithm_name}", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#BB86FC")  
     gantt_title.pack(pady=5, expand=True)
     plot_gantt_chart(gantt_frame, gantt_chart)
 
-    hist_title = tk.Label(hist_frame, text="Histogram of Waiting Times", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#BB86FC")  # Reduced from 26 to 18
+    hist_title = tk.Label(hist_frame, text="Histogram of Waiting Times", font=("Arial", 18, "bold"), bg="#3f3f3f", fg="#BB86FC")  
     hist_title.pack(pady=5, expand=True)
     plot_histogram(hist_frame, process_array, waiting_array)
 
@@ -666,12 +661,12 @@ def visualize_scheduling(n, process_array, arrival_array, burst_array,priority_a
     go_back_label = tk.Label(
         scrollable_frame,
         text="  Go Back  ",
-        font=("Arial", 16, "bold"),  # Reduced from 16 to 12
+        font=("Arial", 16, "bold"),  
         bg="#040406",
         fg="white",
         cursor="hand2"
     )
-    go_back_label.pack(pady=10)  # Reduced from 20 to 10
+    go_back_label.pack(pady=10)  
     go_back_label.bind("<Button-1>", lambda e: root.destroy())
 
     def on_mouse_wheel(event):
@@ -715,26 +710,26 @@ def calculate_energy(gantt_chart, total_time, active_power=5.0, idle_power=1.0, 
     Returns:
     - dict: Energy breakdown (total, active, idle, context switch).
     """
-    # Calculate active time and context switches
+   
     active_time = 0
     context_switches = 0
     last_process = None
     last_end = 0
 
     for process, start, end in gantt_chart:
-        # Add active time
+        
         active_time += end - start
         
-        # Check for context switch
+        
         if last_process is not None and start == last_end and process != last_process:
             context_switches += 1
         last_process = process
         last_end = end
 
-    # Calculate idle time
+   
     idle_time = total_time - active_time
 
-    # Calculate energy
+    
     active_energy = active_time * active_power  # J
     idle_energy = idle_time * idle_power  # J
     context_switch_energy_total = context_switches * context_switch_energy  # J
@@ -789,7 +784,7 @@ def show_energy_consumption_view(algo, gantt_chart, total_time):
             # Update the position of the window in the canvas
             canvas.coords(canvas_window, x_position, 0)
 
-        # Bind the center_content function to the canvas's <Configure> event
+
         canvas.bind("<Configure>", center_content)
 
         # Title (Centered)
